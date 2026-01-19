@@ -10,7 +10,7 @@ import type {
   ParameterAdjustment,
   ReactorConfig,
   DashboardStats,
-} from '@/types/reactor';
+} from '@/app/types/reactor';
 
 // Seeded random number generator for reproducible demos
 class SeededRandom {

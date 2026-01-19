@@ -10,7 +10,7 @@ import type {
   DashboardStats,
   OptimizationResult,
   ParameterAdjustment,
-} from '@/types/reactor';
+} from '@/app/types/reactor';
 import {
   mockReactors,
   generateDashboardStats,

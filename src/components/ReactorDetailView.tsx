@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Reactor, ParameterAdjustment } from '@/types/reactor';
+import type { Reactor, ParameterAdjustment } from '@/app/types/reactor';
 import { useReactors } from '@/contexts/ReactorContext';
 
 interface ReactorDetailViewProps {

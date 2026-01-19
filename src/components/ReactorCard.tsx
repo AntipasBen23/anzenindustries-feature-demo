@@ -1,6 +1,6 @@
 'use client';
 
-import type { Reactor } from '@/types/reactor';
+import type { Reactor } from '@/app/types/reactor';
 import { useReactors } from '@/contexts/ReactorContext';
 
 interface ReactorCardProps {

@@ -93,7 +93,7 @@ export default function DashboardStats() {
           </div>
 
           {/* Visual indicator for active status */}
-          {stat.label === 'Active Reactors' && stat.value > 0 && (
+          {stat.label === 'Active Reactors' && Number(stat.value) > 0 && (
             <div className="absolute top-3 right-3">
               <div className="w-2 h-2 bg-black rounded-full pulse-indicator"></div>
             </div>
