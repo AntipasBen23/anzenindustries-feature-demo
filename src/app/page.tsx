@@ -3,6 +3,7 @@
 import { useReactors } from '@/contexts/ReactorContext';
 import DashboardStats from '@/components/DashboardStats';
 import ReactorCard from '@/components/ReactorCard';
+import ReactorDetailView from '@/components/ReactorDetailView';
 
 export default function DashboardPage() {
   const { reactors, selectedReactor, selectReactor } = useReactors();
@@ -218,6 +219,14 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Reactor Detail Modal */}
+      {selectedReactor && (
+        <ReactorDetailView
+          reactor={selectedReactor}
+          onClose={() => selectReactor('')}
+        />
+      )}
     </div>
   );
 }
