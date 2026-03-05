@@ -283,8 +283,8 @@ function generateAlerts(reactorId: string, metrics: ReactorMetrics, history: His
 // Generate AI predictions
 function generateAIPredictions(
   metrics: ReactorMetrics,
-  history: HistoricalDataPoint[],
-  runningTime: number
+  _history: HistoricalDataPoint[],
+  _runningTime: number
 ): AIPrediction {
   const random = new SeededRandom(Date.now());
 
