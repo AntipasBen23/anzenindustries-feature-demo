@@ -3,7 +3,7 @@
 // Global state management for reactor monitoring platform
 // Handles real-time updates, optimization, and user interactions
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import type {
   Reactor,
   ReactorMetrics,
@@ -16,11 +16,20 @@ import {
   generateDashboardStats,
   createMockReactor,
 } from '@/lib/mockData';
+import { isBackendConfigured, sendTelemetrySnapshot } from '@/lib/backendApi';
+
+interface CloudSyncStatus {
+  configured: boolean;
+  targetUrl: string | null;
+  lastSyncedAt: Date | null;
+  lastError: string | null;
+}
 
 interface ReactorContextType {
   reactors: Reactor[];
   dashboardStats: DashboardStats;
   selectedReactor: Reactor | null;
+  cloudSync: CloudSyncStatus;
   isOptimizing: boolean;
   optimizationResult: OptimizationResult | null;
   selectReactor: (reactorId: string) => void;
@@ -35,12 +44,24 @@ const ReactorContext = createContext<ReactorContextType | undefined>(undefined);
 
 export function ReactorProvider({ children }: { children: React.ReactNode }) {
   const [reactors, setReactors] = useState<Reactor[]>(mockReactors);
-  const [selectedReactor, setSelectedReactor] = useState<Reactor | null>(null);
+  const [selectedReactorId, setSelectedReactorId] = useState<string | null>(null);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats>(
     generateDashboardStats(mockReactors)
   );
+  const [cloudSync, setCloudSync] = useState<CloudSyncStatus>({
+    configured: isBackendConfigured(),
+    targetUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL || null,
+    lastSyncedAt: null,
+    lastError: null,
+  });
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizationResult, setOptimizationResult] = useState<OptimizationResult | null>(null);
+  const reactorsRef = useRef<Reactor[]>(mockReactors);
+
+  const selectedReactor = useMemo(
+    () => reactors.find((reactor) => reactor.id === selectedReactorId) || null,
+    [reactors, selectedReactorId]
+  );
 
   // Real-time metric updates (every 2 seconds)
   useEffect(() => {
@@ -122,7 +143,7 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
             updated.status = 'maintenance';
           } else if (reactor.alerts.some(a => a.type === 'critical' && !a.resolved)) {
             updated.status = 'error';
-          } else if (isOptimizing && reactor.id === selectedReactor?.id) {
+          } else if (isOptimizing && reactor.id === selectedReactorId) {
             updated.status = 'optimizing';
           } else {
             updated.status = 'running';
@@ -139,13 +160,46 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
     }, 2000); // Update every 2 seconds
 
     return () => clearInterval(interval);
-  }, [isOptimizing, selectedReactor]);
+  }, [isOptimizing, selectedReactorId]);
+
+  // Keep current reactor snapshot for telemetry sync effect
+  useEffect(() => {
+    reactorsRef.current = reactors;
+  }, [reactors]);
+
+  // Sync telemetry to deployed backend every 10 seconds
+  useEffect(() => {
+    if (!isBackendConfigured()) {
+      return;
+    }
+
+    const sync = async () => {
+      try {
+        const result = await sendTelemetrySnapshot(reactorsRef.current);
+        if (!result.skipped) {
+          setCloudSync((prev) => ({
+            ...prev,
+            lastSyncedAt: new Date(),
+            lastError: null,
+          }));
+        }
+      } catch (error) {
+        setCloudSync((prev) => ({
+          ...prev,
+          lastError: error instanceof Error ? error.message : 'Cloud sync failed',
+        }));
+      }
+    };
+
+    sync();
+    const interval = setInterval(sync, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Select a reactor for detailed view
   const selectReactor = useCallback((reactorId: string) => {
-    const reactor = reactors.find((r) => r.id === reactorId);
-    setSelectedReactor(reactor || null);
-  }, [reactors]);
+    setSelectedReactorId(reactorId || null);
+  }, []);
 
   // Update a specific parameter (manual control)
   const updateReactorParameter = useCallback(
@@ -189,14 +243,15 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
 
   // Start AI optimization process
   const startOptimization = useCallback((reactorId: string) => {
-    setIsOptimizing(true);
-    
     const reactor = reactors.find((r) => r.id === reactorId);
-    if (!reactor) return;
+    if (!reactor) {
+      return;
+    }
+
+    setIsOptimizing(true);
 
     // Simulate AI processing time
     setTimeout(() => {
-      const currentYield = reactor.currentMetrics.productYield;
       const improvements = {
         yieldIncrease: 8.5 + Math.random() * 5,
         efficiencyGain: 12.3 + Math.random() * 3,
@@ -294,6 +349,7 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
     reactors,
     dashboardStats,
     selectedReactor,
+    cloudSync,
     isOptimizing,
     optimizationResult,
     selectReactor,
