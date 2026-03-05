@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { Reactor, ParameterAdjustment } from '@/app/types/reactor';
+import type { Reactor } from '@/app/types/reactor';
 import { useReactors } from '@/contexts/ReactorContext';
 
 interface ReactorDetailViewProps {
@@ -73,6 +73,9 @@ export default function ReactorDetailView({ reactor, onClose }: ReactorDetailVie
   ];
 
   const unresolvedAlerts = reactor.alerts.filter(a => !a.resolved);
+  const maintenanceDays = Math.floor(
+    (reactor.currentMetrics.timestamp.getTime() - reactor.lastMaintenance.getTime()) / 86400000
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
@@ -222,7 +225,7 @@ export default function ReactorDetailView({ reactor, onClose }: ReactorDetailVie
                     <div className="flex justify-between">
                       <span className="text-gray-600">Last Maintenance:</span>
                       <span className="font-medium text-black">
-                        {Math.floor((Date.now() - reactor.lastMaintenance.getTime()) / 86400000)}d ago
+                        {maintenanceDays}d ago
                       </span>
                     </div>
                     <div className="flex justify-between">
