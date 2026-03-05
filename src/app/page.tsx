@@ -6,11 +6,18 @@ import ReactorCard from '@/components/ReactorCard';
 import ReactorDetailView from '@/components/ReactorDetailView';
 
 export default function DashboardPage() {
-  const { reactors, selectedReactor, selectReactor } = useReactors();
+  const { reactors, selectedReactor, selectReactor, cloudSync } = useReactors();
+
+  const syncText = !cloudSync.configured
+    ? 'Backend not configured'
+    : cloudSync.lastError
+      ? `Sync issue: ${cloudSync.lastError}`
+      : cloudSync.lastSyncedAt
+        ? `Cloud synced at ${cloudSync.lastSyncedAt.toLocaleTimeString()}`
+        : 'Connecting to cloud sync...';
 
   return (
     <div className="container-responsive py-8">
-      {/* Page Header */}
       <div className="page-header">
         <div className="flex items-center justify-between">
           <div>
@@ -20,33 +27,25 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          {/* Last Update Indicator */}
           <div className="flex items-center gap-2 text-sm">
             <div className="w-2 h-2 bg-black rounded-full pulse-indicator"></div>
-            <span className="text-gray-600">
-              Live Updates
-            </span>
+            <span className="text-gray-600">Live Updates</span>
           </div>
         </div>
       </div>
 
-      {/* Dashboard Stats Overview */}
       <div className="mb-8">
         <DashboardStats />
       </div>
 
-      {/* Reactors Grid Section */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-black">
-            Reactor Systems
-          </h2>
+          <h2 className="text-xl font-semibold text-black">Reactor Systems</h2>
           <span className="text-sm text-gray-600">
             {reactors.length} {reactors.length === 1 ? 'reactor' : 'reactors'} configured
           </span>
         </div>
 
-        {/* Reactors Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {reactors.map((reactor) => (
             <ReactorCard key={reactor.id} reactor={reactor} />
@@ -54,16 +53,14 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick Actions Panel */}
       <div className="card p-6">
         <h3 className="card-title">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          {/* View All Alerts */}
-          <button 
+          <button
             className="btn-secondary text-left p-4 h-auto"
             onClick={() => {
-              const firstReactorWithAlerts = reactors.find(r => 
-                r.alerts.filter(a => !a.resolved).length > 0
+              const firstReactorWithAlerts = reactors.find(
+                (reactor) => reactor.alerts.filter((alert) => !alert.resolved).length > 0
               );
               if (firstReactorWithAlerts) {
                 selectReactor(firstReactorWithAlerts.id);
@@ -89,17 +86,20 @@ export default function DashboardPage() {
               <div>
                 <div className="font-semibold text-black mb-1">View Alerts</div>
                 <div className="text-sm text-gray-600">
-                  {reactors.reduce((sum, r) => sum + r.alerts.filter(a => !a.resolved).length, 0)} active alerts
+                  {reactors.reduce(
+                    (sum, reactor) => sum + reactor.alerts.filter((alert) => !alert.resolved).length,
+                    0
+                  )}{' '}
+                  active alerts
                 </div>
               </div>
             </div>
           </button>
 
-          {/* Run Optimization */}
-          <button 
+          <button
             className="btn-secondary text-left p-4 h-auto"
             onClick={() => {
-              const firstRunningReactor = reactors.find(r => r.status === 'running');
+              const firstRunningReactor = reactors.find((reactor) => reactor.status === 'running');
               if (firstRunningReactor) {
                 selectReactor(firstRunningReactor.id);
               }
@@ -123,15 +123,12 @@ export default function DashboardPage() {
               </svg>
               <div>
                 <div className="font-semibold text-black mb-1">AI Optimization</div>
-                <div className="text-sm text-gray-600">
-                  Optimize reactor parameters
-                </div>
+                <div className="text-sm text-gray-600">Optimize reactor parameters</div>
               </div>
             </div>
           </button>
 
-          {/* System Reports */}
-          <button 
+          <button
             className="btn-secondary text-left p-4 h-auto"
             onClick={() => {
               alert('Report generation feature - Coming soon in full version');
@@ -155,16 +152,13 @@ export default function DashboardPage() {
               </svg>
               <div>
                 <div className="font-semibold text-black mb-1">Generate Report</div>
-                <div className="text-sm text-gray-600">
-                  Export system analytics
-                </div>
+                <div className="text-sm text-gray-600">Export system analytics</div>
               </div>
             </div>
           </button>
         </div>
       </div>
 
-      {/* System Information Footer */}
       <div className="mt-8 p-4 bg-gray-50 rounded border border-gray-200">
         <div className="flex items-start gap-3">
           <svg
@@ -179,17 +173,14 @@ export default function DashboardPage() {
             <path strokeLinecap="round" strokeWidth={2} d="M12 16v-4M12 8h.01" />
           </svg>
           <div className="flex-1">
-            <div className="text-sm font-medium text-black mb-1">
-              Platform Status: Operational
-            </div>
+            <div className="text-sm font-medium text-black mb-1">Platform Status: Operational</div>
             <div className="text-xs text-gray-600">
-              All systems connected • Data updates every 2 seconds • Last system check: {new Date().toLocaleTimeString()}
+              All systems connected | Data updates every 2 seconds | {syncText}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Demo Notice */}
       <div className="mt-6 p-4 border-2 border-black rounded">
         <div className="flex items-start gap-3">
           <svg
@@ -208,25 +199,20 @@ export default function DashboardPage() {
             />
           </svg>
           <div className="flex-1">
-            <div className="text-sm font-bold text-black mb-1">
-              Demo Platform - Simulated Data
-            </div>
+            <div className="text-sm font-bold text-black mb-1">Demo Platform - Simulated Data</div>
             <div className="text-xs text-gray-700">
-              This interface demonstrates real-time reactor monitoring with physics-based simulations. 
+              This interface demonstrates real-time reactor monitoring with physics-based simulations.
               Click on any reactor card to view detailed metrics, AI predictions, and optimization controls.
-              Production deployment integrates with actual MQTT sensors and ML models.
+              Production deployment streams telemetry into the live backend and Supabase storage.
             </div>
           </div>
         </div>
       </div>
 
-      {/* Reactor Detail Modal */}
       {selectedReactor && (
-        <ReactorDetailView
-          reactor={selectedReactor}
-          onClose={() => selectReactor('')}
-        />
+        <ReactorDetailView reactor={selectedReactor} onClose={() => selectReactor('')} />
       )}
     </div>
   );
 }
+
