@@ -281,11 +281,7 @@ function generateAlerts(reactorId: string, metrics: ReactorMetrics, history: His
 }
 
 // Generate AI predictions
-function generateAIPredictions(
-  metrics: ReactorMetrics,
-  _history: HistoricalDataPoint[],
-  _runningTime: number
-): AIPrediction {
+function generateAIPredictions(metrics: ReactorMetrics): AIPrediction {
   const random = new SeededRandom(Date.now());
 
   // Predict enzyme deactivation
@@ -374,7 +370,7 @@ export function createMockReactor(
   const currentMetrics = simulator.getCurrentMetrics();
   const history = generateHistoricalData(id, 24, 5);
   const alerts = generateAlerts(id, currentMetrics, history);
-  const predictions = generateAIPredictions(currentMetrics, history, simulator.getRunningTime());
+  const predictions = generateAIPredictions(currentMetrics);
 
   const random = new SeededRandom(seed);
   const status = currentMetrics.enzymeActivity < 70 ? 'maintenance' :
