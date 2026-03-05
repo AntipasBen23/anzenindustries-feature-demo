@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactorProvider } from '@/contexts/ReactorContext';
@@ -14,11 +14,12 @@ export const metadata: Metadata = {
   description: 'Real-time enzyme reactor monitoring and AI-powered optimization for cell-free biomanufacturing',
   keywords: ['enzyme reactor', 'biomanufacturing', 'process monitoring', 'AI optimization'],
   authors: [{ name: 'Anzen Industries' }],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
