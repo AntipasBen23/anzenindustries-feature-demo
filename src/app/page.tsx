@@ -4,6 +4,7 @@ import { useReactors } from '@/contexts/ReactorContext';
 import DashboardStats from '@/components/DashboardStats';
 import ReactorCard from '@/components/ReactorCard';
 import ReactorDetailView from '@/components/ReactorDetailView';
+import BoardroomSimulator from '@/components/BoardroomSimulator';
 
 export default function DashboardPage() {
   const { reactors, selectedReactor, selectReactor, cloudSync } = useReactors();
@@ -82,6 +83,8 @@ export default function DashboardPage() {
       <div className="mb-8">
         <DashboardStats />
       </div>
+
+      <BoardroomSimulator reactors={reactors} />
 
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -260,4 +263,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
