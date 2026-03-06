@@ -1,13 +1,52 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useReactors } from '@/contexts/ReactorContext';
 import DashboardStats from '@/components/DashboardStats';
 import ReactorCard from '@/components/ReactorCard';
 import ReactorDetailView from '@/components/ReactorDetailView';
 import BoardroomSimulator from '@/components/BoardroomSimulator';
 
+const SCRIPT_STEP_SECONDS = 20;
+
+const demoScriptSteps = [
+  {
+    id: 'executive-hero',
+    title: 'Problem Framing',
+    script: 'Start with why this matters: teams lose throughput due to delayed optimization decisions.',
+  },
+  {
+    id: 'impact-grid',
+    title: 'Business Impact',
+    script: 'Show projected upside first: yield uplift, additional batches, and downtime avoided.',
+  },
+  {
+    id: 'boardroom-sim',
+    title: 'Boardroom ROI',
+    script: 'Switch between current and AI-optimized scenarios to show financial delta over 90 days.',
+  },
+  {
+    id: 'reactor-grid',
+    title: 'Operational Detail',
+    script: 'Demonstrate per-reactor visibility with live telemetry and instant anomaly awareness.',
+  },
+  {
+    id: 'quick-actions',
+    title: 'Actionability',
+    script: 'Highlight one-click actions for alerts, optimization, and reporting.',
+  },
+  {
+    id: 'status-panel',
+    title: 'Pilot Ask',
+    script: 'Close by proposing a focused pilot with clear metrics and review milestones.',
+  },
+];
+
 export default function DashboardPage() {
   const { reactors, selectedReactor, selectReactor, cloudSync } = useReactors();
+  const [isScriptRunning, setIsScriptRunning] = useState(false);
+  const [scriptStepIndex, setScriptStepIndex] = useState(0);
+  const [secondsRemaining, setSecondsRemaining] = useState(SCRIPT_STEP_SECONDS);
   const averageYield = reactors.reduce((sum, reactor) => sum + reactor.currentMetrics.productYield, 0) / reactors.length;
   const projectedYieldGain = Math.max(6, Math.round((90 - averageYield) * 0.75));
   const annualBatchUplift = Math.round(reactors.length * 28 * (projectedYieldGain / 10));
@@ -26,10 +65,58 @@ export default function DashboardPage() {
   const streamLabel = cloudSync.mode === 'demo'
     ? 'Simulation Mode'
     : 'Live Cloud Mode';
+  const activeStep = demoScriptSteps[scriptStepIndex];
+  const progress = ((scriptStepIndex * SCRIPT_STEP_SECONDS) + (SCRIPT_STEP_SECONDS - secondsRemaining))
+    / (demoScriptSteps.length * SCRIPT_STEP_SECONDS);
+
+  useEffect(() => {
+    if (!isScriptRunning) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setSecondsRemaining((prev) => {
+        if (prev > 1) {
+          return prev - 1;
+        }
+
+        setScriptStepIndex((step) => {
+          if (step >= demoScriptSteps.length - 1) {
+            setIsScriptRunning(false);
+            return step;
+          }
+          return step + 1;
+        });
+        return SCRIPT_STEP_SECONDS;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isScriptRunning]);
+
+  useEffect(() => {
+    if (!isScriptRunning) {
+      return;
+    }
+
+    const element = document.getElementById(activeStep.id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [activeStep.id, isScriptRunning]);
+
+  const startScript = () => {
+    setScriptStepIndex(0);
+    setSecondsRemaining(SCRIPT_STEP_SECONDS);
+    setIsScriptRunning(true);
+  };
 
   return (
     <div className="container-responsive py-8">
-      <div className="executive-hero mb-6">
+      <div
+        id="executive-hero"
+        className={`executive-hero mb-6 ${isScriptRunning && activeStep.id === 'executive-hero' ? 'demo-focus' : ''}`}
+      >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="text-xs uppercase tracking-wider text-gray-600 mb-2">Anzen Reactor Intelligence</p>
@@ -44,9 +131,22 @@ export default function DashboardPage() {
             <span>{streamLabel}</span>
           </div>
         </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <button className="btn-primary" onClick={startScript} disabled={isScriptRunning}>
+            Run CEO Demo Script (2 min)
+          </button>
+          {isScriptRunning && (
+            <button className="btn-secondary" onClick={() => setIsScriptRunning(false)}>
+              Stop Script
+            </button>
+          )}
+        </div>
       </div>
 
-      <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div
+        id="impact-grid"
+        className={`mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 ${isScriptRunning && activeStep.id === 'impact-grid' ? 'demo-focus' : ''}`}
+      >
         <div className="impact-card">
           <div className="impact-label">Projected Yield Uplift</div>
           <div className="impact-value">+{projectedYieldGain}%</div>
@@ -84,9 +184,14 @@ export default function DashboardPage() {
         <DashboardStats />
       </div>
 
-      <BoardroomSimulator reactors={reactors} />
+      <div id="boardroom-sim" className={isScriptRunning && activeStep.id === 'boardroom-sim' ? 'demo-focus' : ''}>
+        <BoardroomSimulator reactors={reactors} />
+      </div>
 
-      <div className="mb-8">
+      <div
+        id="reactor-grid"
+        className={`mb-8 ${isScriptRunning && activeStep.id === 'reactor-grid' ? 'demo-focus' : ''}`}
+      >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-black">Reactor Systems</h2>
           <span className="text-sm text-gray-600">
@@ -101,7 +206,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="card p-6">
+      <div
+        id="quick-actions"
+        className={`card p-6 ${isScriptRunning && activeStep.id === 'quick-actions' ? 'demo-focus' : ''}`}
+      >
         <h3 className="card-title">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <button
@@ -207,7 +315,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-8 p-4 bg-gray-50 rounded border border-gray-200">
+      <div
+        id="status-panel"
+        className={`mt-8 p-4 bg-gray-50 rounded border border-gray-200 ${isScriptRunning && activeStep.id === 'status-panel' ? 'demo-focus' : ''}`}
+      >
         <div className="flex items-start gap-3">
           <svg
             width="20"
@@ -256,6 +367,22 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {isScriptRunning && (
+        <div className="demo-script-panel">
+          <div className="demo-script-title">
+            Step {scriptStepIndex + 1}/{demoScriptSteps.length}: {activeStep.title}
+          </div>
+          <div className="demo-script-copy">{activeStep.script}</div>
+          <div className="demo-script-meta">
+            <span>{secondsRemaining}s left in this step</span>
+            <span>{Math.round(progress * 100)}% complete</span>
+          </div>
+          <div className="demo-script-progress">
+            <div className="demo-script-progress-fill" style={{ width: `${Math.max(4, progress * 100)}%` }} />
+          </div>
+        </div>
+      )}
 
       {selectedReactor && (
         <ReactorDetailView reactor={selectedReactor} onClose={() => selectReactor('')} />
