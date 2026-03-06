@@ -5,13 +5,23 @@ function getBackendBaseUrl() {
   return raw.replace(/\/$/, '');
 }
 
+function getTelemetryIngestUrl() {
+  const direct = process.env.NEXT_PUBLIC_TELEMETRY_INGEST_URL || '';
+  if (direct) {
+    return direct;
+  }
+
+  const baseUrl = getBackendBaseUrl();
+  return baseUrl ? `${baseUrl}/api/telemetry` : '';
+}
+
 export function isBackendConfigured() {
-  return Boolean(getBackendBaseUrl());
+  return Boolean(getTelemetryIngestUrl());
 }
 
 export async function sendTelemetrySnapshot(reactors: Reactor[]) {
-  const baseUrl = getBackendBaseUrl();
-  if (!baseUrl || reactors.length === 0) {
+  const ingestUrl = getTelemetryIngestUrl();
+  if (!ingestUrl || reactors.length === 0) {
     return { sent: 0, skipped: true };
   }
 
@@ -36,6 +46,7 @@ export async function sendTelemetrySnapshot(reactors: Reactor[]) {
   const responses = await Promise.all(
     payloads.map((body) =>
       fetch(`${baseUrl}/api/telemetry`, {
+      fetch(ingestUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -50,4 +61,3 @@ export async function sendTelemetrySnapshot(reactors: Reactor[]) {
 
   return { sent: payloads.length, skipped: false };
 }
-

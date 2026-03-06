@@ -50,7 +50,7 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
   );
   const [cloudSync, setCloudSync] = useState<CloudSyncStatus>({
     configured: isBackendConfigured(),
-    targetUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL || null,
+    targetUrl: process.env.NEXT_PUBLIC_TELEMETRY_INGEST_URL || process.env.NEXT_PUBLIC_BACKEND_BASE_URL || null,
     lastSyncedAt: null,
     lastError: null,
   });
