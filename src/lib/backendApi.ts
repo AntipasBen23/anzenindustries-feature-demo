@@ -45,7 +45,6 @@ export async function sendTelemetrySnapshot(reactors: Reactor[]) {
 
   const responses = await Promise.all(
     payloads.map((body) =>
-      fetch(`${baseUrl}/api/telemetry`, {
       fetch(ingestUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
