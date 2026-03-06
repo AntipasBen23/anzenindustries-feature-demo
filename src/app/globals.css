@@ -446,6 +446,58 @@
     padding-bottom: 1rem;
     margin-bottom: 1.5rem;
   }
+
+  .executive-hero {
+    border: 1px solid #e6e6e6;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    background:
+      linear-gradient(130deg, #ffffff 0%, #f8fafc 45%, #f3f4f6 100%);
+    box-shadow: 0 20px 40px -36px rgb(0 0 0 / 0.55);
+  }
+
+  .stream-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #111827;
+    background: #ffffff;
+  }
+
+  .impact-card {
+    border: 1px solid #e6e6e6;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    box-shadow: 0 12px 26px -28px rgb(0 0 0 / 0.6);
+  }
+
+  .impact-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  .impact-value {
+    margin-top: 0.45rem;
+    font-size: 1.9rem;
+    line-height: 2.2rem;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  .impact-caption {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: #4b5563;
+  }
   
   /* Card styles */
   .card {
