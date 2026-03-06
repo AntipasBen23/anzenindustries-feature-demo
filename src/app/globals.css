@@ -498,6 +498,120 @@
     font-size: 0.75rem;
     color: #4b5563;
   }
+
+  .boardroom-shell {
+    border: 1px solid #e6e6e6;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    background:
+      radial-gradient(circle at 0% 0%, #ffffff 0%, #f8fafc 40%, transparent 62%),
+      linear-gradient(145deg, #ffffff 0%, #f3f4f6 100%);
+    box-shadow: 0 24px 38px -36px rgb(0 0 0 / 0.55);
+  }
+
+  .boardroom-head {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .mode-switch {
+    display: inline-flex;
+    padding: 0.25rem;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    box-shadow: 0 8px 20px -16px rgb(0 0 0 / 0.55);
+  }
+
+  .mode-btn,
+  .mode-active {
+    border: none;
+    border-radius: 9999px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    color: #4b5563;
+  }
+
+  .mode-active {
+    background: #111827;
+    color: #ffffff;
+  }
+
+  .roi-card-3d {
+    position: relative;
+    border-radius: 0.9rem;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    background: linear-gradient(165deg, #ffffff 0%, #f9fafb 100%);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.75) inset,
+      0 18px 28px -26px rgb(0 0 0 / 0.75);
+    transform-style: preserve-3d;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .roi-card-3d::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(120deg, rgb(255 255 255 / 0.5), transparent 35%);
+    pointer-events: none;
+  }
+
+  .roi-card-3d:hover {
+    transform: perspective(900px) rotateX(4deg) rotateY(-4deg) translateY(-2px);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.85) inset,
+      0 22px 32px -24px rgb(0 0 0 / 0.85);
+  }
+
+  .roi-card-highlight {
+    background: linear-gradient(165deg, #111827 0%, #000000 100%);
+    color: #ffffff;
+    border: 1px solid #111827;
+  }
+
+  .roi-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    font-weight: 600;
+  }
+
+  .roi-card-highlight .roi-label {
+    color: rgb(255 255 255 / 0.78);
+  }
+
+  .roi-value {
+    margin-top: 0.5rem;
+    font-size: 1.8rem;
+    line-height: 2.1rem;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  .roi-card-highlight .roi-value {
+    color: #ffffff;
+  }
+
+  .roi-sub {
+    margin-top: 0.45rem;
+    font-size: 0.75rem;
+    color: #4b5563;
+  }
+
+  .roi-card-highlight .roi-sub {
+    color: rgb(255 255 255 / 0.82);
+  }
   
   /* Card styles */
   .card {
