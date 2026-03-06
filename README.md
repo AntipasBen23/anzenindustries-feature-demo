@@ -1,36 +1,37 @@
 # Anzen Reactor Intelligence Frontend
 
-## Production setup
-This frontend now sends live telemetry snapshots to your deployed backend.
+This project runs fully as a frontend-only demo.
 
-Required env:
-```bash
-NEXT_PUBLIC_BACKEND_BASE_URL=https://your-backend-domain.com
-```
+## Frontend-only demo mode (default)
+No backend required.
 
-Use `.env.example` as template.
-
-## Run locally
 ```bash
 npm install
 npm run dev
 ```
 
+The app simulates:
+- real-time telemetry updates
+- optimization recommendations
+- cloud-sync heartbeat (demo stream)
+
+## Optional live API mode
+If you later want live telemetry ingestion, set either:
+
+```bash
+NEXT_PUBLIC_TELEMETRY_INGEST_URL=https://YOUR_PROJECT.supabase.co/functions/v1/telemetry-ingest
+```
+
+or
+
+```bash
+NEXT_PUBLIC_BACKEND_BASE_URL=https://your-backend-domain.com
+```
+
 ## Build
 ```bash
+npm run lint
 npm run build
 npm run start
 ```
-
-## Deploy to Vercel (recommended)
-1. Import this repo into Vercel.
-2. Add env var:
-   - `NEXT_PUBLIC_BACKEND_BASE_URL` = your deployed backend URL.
-3. Redeploy.
-
-## Backend expectation
-Frontend expects these endpoints on your backend:
-- `GET /health`
-- `POST /api/telemetry`
-- `GET /api/telemetry`
 
