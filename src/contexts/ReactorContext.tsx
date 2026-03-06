@@ -20,6 +20,7 @@ import { isBackendConfigured, sendTelemetrySnapshot } from '@/lib/backendApi';
 
 interface CloudSyncStatus {
   configured: boolean;
+  mode: 'demo' | 'live';
   targetUrl: string | null;
   lastSyncedAt: Date | null;
   lastError: string | null;
@@ -49,8 +50,11 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
     generateDashboardStats(mockReactors)
   );
   const [cloudSync, setCloudSync] = useState<CloudSyncStatus>({
-    configured: isBackendConfigured(),
-    targetUrl: process.env.NEXT_PUBLIC_TELEMETRY_INGEST_URL || process.env.NEXT_PUBLIC_BACKEND_BASE_URL || null,
+    configured: true,
+    mode: isBackendConfigured() ? 'live' : 'demo',
+    targetUrl: process.env.NEXT_PUBLIC_TELEMETRY_INGEST_URL
+      || process.env.NEXT_PUBLIC_BACKEND_BASE_URL
+      || 'In-browser simulation stream',
     lastSyncedAt: null,
     lastError: null,
   });
@@ -170,7 +174,15 @@ export function ReactorProvider({ children }: { children: React.ReactNode }) {
   // Sync telemetry to deployed backend every 10 seconds
   useEffect(() => {
     if (!isBackendConfigured()) {
-      return;
+      const interval = setInterval(() => {
+        setCloudSync((prev) => ({
+          ...prev,
+          lastSyncedAt: new Date(),
+          lastError: null,
+        }));
+      }, 10000);
+
+      return () => clearInterval(interval);
     }
 
     const sync = async () => {
