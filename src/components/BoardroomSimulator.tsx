@@ -85,43 +85,6 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
     };
   }, [mode, reactors]);
 
-  const exportProposal = () => {
-    const lines = [
-      'TERA — PILOT PROPOSAL',
-      '',
-      'Program: Reactor Intelligence Boardroom Mode',
-      'Window: 90 days',
-      '',
-      `Current Yield: ${scenario.current.yield}%`,
-      `Optimized Yield: ${scenario.optimized.yield}%`,
-      `Yield Uplift: +${scenario.deltas.yield}%`,
-      '',
-      `Current Downtime: ${scenario.current.downtimeHours}h`,
-      `Optimized Downtime: ${scenario.optimized.downtimeHours}h`,
-      `Downtime Avoided: ${scenario.deltas.downtime}h`,
-      '',
-      `Current Batches: ${scenario.current.batches}`,
-      `Optimized Batches: ${scenario.optimized.batches}`,
-      `Additional Batches: +${scenario.deltas.batches}`,
-      '',
-      `Estimated 90-day Revenue Delta: +$${scenario.deltas.revenue.toLocaleString()}`,
-      '',
-      'Top Drivers:',
-      ...scenario.drivers.map((driver) => `- ${driver.label}: ${driver.detail}`),
-      '',
-      'Recommendation:',
-      'Run a 6-week pilot on 2 reactors with weekly performance review gates.',
-    ];
-
-    const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = 'anzen-pilot-proposal.txt';
-    anchor.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <section className="boardroom-shell mb-8">
       <div className="boardroom-head">
@@ -173,30 +136,15 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4">
-        <div className="xl:col-span-2 card p-5">
-          <h3 className="text-sm font-semibold text-white mb-3">Why The Model Moves</h3>
-          <div className="space-y-3">
-            {scenario.drivers.map((driver) => (
-              <div key={driver.label} className="p-3 rounded border border-zinc-700/60 bg-zinc-800/40">
-                <div className="text-sm font-semibold text-white">{driver.label}</div>
-                <div className="text-xs text-zinc-300 mt-1">{driver.detail}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="card p-5">
-          <h3 className="text-sm font-semibold text-white mb-3">Executive Action Pack</h3>
-          <p className="text-xs text-zinc-300 mb-4">
-            Export a concise pilot recommendation with hard numbers for stakeholder review.
-          </p>
-          <button className="btn-primary w-full" onClick={exportProposal}>
-            Export Pilot Proposal
-          </button>
-          <div className="mt-3 text-xs text-gray-600">
-            Includes upside, confidence band, and top operational drivers.
-          </div>
+      <div className="mt-4 card p-5">
+        <h3 className="text-sm font-semibold text-white mb-3">Why The Model Moves</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {scenario.drivers.map((driver) => (
+            <div key={driver.label} className="p-3 rounded border border-zinc-700/60 bg-zinc-800/40">
+              <div className="text-sm font-semibold text-white">{driver.label}</div>
+              <div className="text-xs text-zinc-300 mt-1">{driver.detail}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

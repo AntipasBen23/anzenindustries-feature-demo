@@ -1,55 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useReactors } from '@/contexts/ReactorContext';
 import DashboardStats from '@/components/DashboardStats';
 import ReactorCard from '@/components/ReactorCard';
 import ReactorDetailView from '@/components/ReactorDetailView';
 import BoardroomSimulator from '@/components/BoardroomSimulator';
 
-const SCRIPT_STEP_SECONDS = 20;
-
-const demoScriptSteps = [
-  {
-    id: 'executive-hero',
-    title: 'Problem Framing',
-    script: 'Start with why this matters: teams lose throughput due to delayed optimization decisions.',
-  },
-  {
-    id: 'impact-grid',
-    title: 'Business Impact',
-    script: 'Show projected upside first: yield uplift, additional batches, and downtime avoided.',
-  },
-  {
-    id: 'boardroom-sim',
-    title: 'Boardroom ROI',
-    script: 'Switch between current and AI-optimized scenarios to show financial delta over 90 days.',
-  },
-  {
-    id: 'reactor-grid',
-    title: 'Operational Detail',
-    script: 'Demonstrate per-reactor visibility with live telemetry and instant anomaly awareness.',
-  },
-  {
-    id: 'quick-actions',
-    title: 'Actionability',
-    script: 'Highlight one-click actions for alerts, optimization, and reporting.',
-  },
-  {
-    id: 'status-panel',
-    title: 'Pilot Ask',
-    script: 'Close by proposing a focused pilot with clear metrics and review milestones.',
-  },
-];
-
 export default function DashboardPage() {
   const { reactors, selectedReactor, selectReactor, cloudSync } = useReactors();
-  const [isScriptRunning, setIsScriptRunning] = useState(false);
-  const [scriptStepIndex, setScriptStepIndex] = useState(0);
-  const [secondsRemaining, setSecondsRemaining] = useState(SCRIPT_STEP_SECONDS);
-  const averageYield = reactors.reduce((sum, reactor) => sum + reactor.currentMetrics.productYield, 0) / reactors.length;
+
+  const averageYield = reactors.reduce((sum, r) => sum + r.currentMetrics.productYield, 0) / reactors.length;
   const projectedYieldGain = Math.max(6, Math.round((90 - averageYield) * 0.75));
-  const annualBatchUplift = Math.round(reactors.length * 28 * (projectedYieldGain / 10));
   const avoidedDowntimeHours = Math.round(reactors.length * 4.5);
 
   const syncText = cloudSync.lastError
@@ -62,65 +23,15 @@ export default function DashboardPage() {
         ? `Cloud synced at ${cloudSync.lastSyncedAt.toLocaleTimeString()}`
         : 'Connecting to cloud sync...';
 
-  const streamLabel = cloudSync.mode === 'demo'
-    ? 'Simulation Mode'
-    : 'Live Cloud Mode';
-  const activeStep = demoScriptSteps[scriptStepIndex];
-  const progress = ((scriptStepIndex * SCRIPT_STEP_SECONDS) + (SCRIPT_STEP_SECONDS - secondsRemaining))
-    / (demoScriptSteps.length * SCRIPT_STEP_SECONDS);
-
-  useEffect(() => {
-    if (!isScriptRunning) {
-      return;
-    }
-
-    const timer = setInterval(() => {
-      setSecondsRemaining((prev) => {
-        if (prev > 1) {
-          return prev - 1;
-        }
-
-        setScriptStepIndex((step) => {
-          if (step >= demoScriptSteps.length - 1) {
-            setIsScriptRunning(false);
-            return step;
-          }
-          return step + 1;
-        });
-        return SCRIPT_STEP_SECONDS;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [isScriptRunning]);
-
-  useEffect(() => {
-    if (!isScriptRunning) {
-      return;
-    }
-
-    const element = document.getElementById(activeStep.id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }, [activeStep.id, isScriptRunning]);
-
-  const startScript = () => {
-    setScriptStepIndex(0);
-    setSecondsRemaining(SCRIPT_STEP_SECONDS);
-    setIsScriptRunning(true);
-  };
+  const streamLabel = cloudSync.mode === 'demo' ? 'Simulation Mode' : 'Live Cloud Mode';
 
   return (
     <div className="container-responsive py-8">
-      <div
-        id="executive-hero"
-        className={`executive-hero mb-6 ${isScriptRunning && activeStep.id === 'executive-hero' ? 'demo-focus' : ''}`}
-      >
+
+      <div className="executive-hero mb-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-zinc-500 mb-2">Tera Reactor Intelligence</p>
-            <h1 className="section-title mb-2">Optimization Command Center</h1>
+            <h1 className="section-title mb-2">Reactor Intelligence</h1>
             <p className="text-sm text-zinc-300 max-w-2xl">
               Real-time decision support for cell-free biomanufacturing. Designed to cut manual tuning cycles
               and convert every reactor run into measurable output gains.
@@ -131,31 +42,13 @@ export default function DashboardPage() {
             <span>{streamLabel}</span>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <button className="btn-primary" onClick={startScript} disabled={isScriptRunning}>
-            Run CEO Demo Script (2 min)
-          </button>
-          {isScriptRunning && (
-            <button className="btn-secondary" onClick={() => setIsScriptRunning(false)}>
-              Stop Script
-            </button>
-          )}
-        </div>
       </div>
 
-      <div
-        id="impact-grid"
-        className={`mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 ${isScriptRunning && activeStep.id === 'impact-grid' ? 'demo-focus' : ''}`}
-      >
+      <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="impact-card">
           <div className="impact-label">Projected Yield Uplift</div>
           <div className="impact-value">+{projectedYieldGain}%</div>
           <div className="impact-caption">from active optimization recommendations</div>
-        </div>
-        <div className="impact-card">
-          <div className="impact-label">Annual Batch Increase</div>
-          <div className="impact-value">+{annualBatchUplift}</div>
-          <div className="impact-caption">estimated additional successful runs</div>
         </div>
         <div className="impact-card">
           <div className="impact-label">Downtime Avoided</div>
@@ -172,7 +65,6 @@ export default function DashboardPage() {
               Real-time monitoring and AI-powered optimization
             </p>
           </div>
-
           <div className="flex items-center gap-2 text-sm">
             <div className="w-2 h-2 bg-zinc-100 rounded-full pulse-indicator"></div>
             <span className="text-zinc-400">Live Updates</span>
@@ -184,14 +76,9 @@ export default function DashboardPage() {
         <DashboardStats />
       </div>
 
-      <div id="boardroom-sim" className={isScriptRunning && activeStep.id === 'boardroom-sim' ? 'demo-focus' : ''}>
-        <BoardroomSimulator reactors={reactors} />
-      </div>
+      <BoardroomSimulator reactors={reactors} />
 
-      <div
-        id="reactor-grid"
-        className={`mb-8 ${isScriptRunning && activeStep.id === 'reactor-grid' ? 'demo-focus' : ''}`}
-      >
+      <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-white">Reactor Systems</h2>
           <span className="text-sm text-zinc-400">
@@ -206,46 +93,27 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div
-        id="quick-actions"
-        className={`card p-6 ${isScriptRunning && activeStep.id === 'quick-actions' ? 'demo-focus' : ''}`}
-      >
+      <div className="card p-6">
         <h3 className="card-title text-white">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <button
             className="btn-secondary text-left p-4 h-auto"
             onClick={() => {
-              const firstReactorWithAlerts = reactors.find(
-                (reactor) => reactor.alerts.filter((alert) => !alert.resolved).length > 0
+              const first = reactors.find(
+                (r) => r.alerts.filter((a) => !a.resolved).length > 0
               );
-              if (firstReactorWithAlerts) {
-                selectReactor(firstReactorWithAlerts.id);
-              }
+              if (first) selectReactor(first.id);
             }}
           >
             <div className="flex items-start gap-3">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                className="flex-shrink-0"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="flex-shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <div>
                 <div className="font-semibold text-white mb-1">View Alerts</div>
                 <div className="text-sm text-zinc-400">
-                  {reactors.reduce(
-                    (sum, reactor) => sum + reactor.alerts.filter((alert) => !alert.resolved).length,
-                    0
-                  )}{' '}
+                  {reactors.reduce((sum, r) => sum + r.alerts.filter((a) => !a.resolved).length, 0)}{' '}
                   active alerts
                 </div>
               </div>
@@ -255,27 +123,13 @@ export default function DashboardPage() {
           <button
             className="btn-secondary text-left p-4 h-auto"
             onClick={() => {
-              const firstRunningReactor = reactors.find((reactor) => reactor.status === 'running');
-              if (firstRunningReactor) {
-                selectReactor(firstRunningReactor.id);
-              }
+              const first = reactors.find((r) => r.status === 'running');
+              if (first) selectReactor(first.id);
             }}
           >
             <div className="flex items-start gap-3">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                className="flex-shrink-0"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="flex-shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               <div>
                 <div className="font-semibold text-white mb-1">AI Optimization</div>
@@ -286,25 +140,12 @@ export default function DashboardPage() {
 
           <button
             className="btn-secondary text-left p-4 h-auto"
-            onClick={() => {
-              alert('Report generation feature - Coming soon in full version');
-            }}
+            onClick={() => alert('Report generation — coming soon')}
           >
             <div className="flex items-start gap-3">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                className="flex-shrink-0"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="flex-shrink-0">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               <div>
                 <div className="font-semibold text-white mb-1">Generate Report</div>
@@ -315,19 +156,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div
-        id="status-panel"
-        className={`mt-8 p-4 bg-zinc-900 rounded border border-zinc-800 ${isScriptRunning && activeStep.id === 'status-panel' ? 'demo-focus' : ''}`}
-      >
+      <div className="mt-8 p-4 bg-zinc-900 rounded border border-zinc-800">
         <div className="flex items-start gap-3">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            className="text-zinc-400 mt-0.5 flex-shrink-0"
-          >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            className="text-zinc-400 mt-0.5 flex-shrink-0">
             <circle cx="12" cy="12" r="10" strokeWidth={2} />
             <path strokeLinecap="round" strokeWidth={2} d="M12 16v-4M12 8h.01" />
           </svg>
@@ -339,50 +171,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-
-      <div className="mt-6 p-4 border border-zinc-700 rounded bg-zinc-900/50">
-        <div className="flex items-start gap-3">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            className="text-zinc-400 mt-0.5 flex-shrink-0"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-            />
-          </svg>
-          <div className="flex-1">
-            <div className="text-sm font-bold text-zinc-100 mb-1">Investor-Ready Demo Mode</div>
-            <div className="text-xs text-zinc-400">
-              This interface demonstrates real-time reactor monitoring with physics-based simulations.
-              It is intentionally frontend-first to validate operational workflows, optimization decisions,
-              and measurable business impact before full sensor integration.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {isScriptRunning && (
-        <div className="demo-script-panel">
-          <div className="demo-script-title">
-            Step {scriptStepIndex + 1}/{demoScriptSteps.length}: {activeStep.title}
-          </div>
-          <div className="demo-script-copy">{activeStep.script}</div>
-          <div className="demo-script-meta">
-            <span>{secondsRemaining}s left in this step</span>
-            <span>{Math.round(progress * 100)}% complete</span>
-          </div>
-          <div className="demo-script-progress">
-            <div className="demo-script-progress-fill" style={{ width: `${Math.max(4, progress * 100)}%` }} />
-          </div>
-        </div>
-      )}
 
       {selectedReactor && (
         <ReactorDetailView reactor={selectedReactor} onClose={() => selectReactor('')} />
