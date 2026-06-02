@@ -5,6 +5,7 @@ import DashboardStats from '@/components/DashboardStats';
 import ReactorCard from '@/components/ReactorCard';
 import ReactorDetailView from '@/components/ReactorDetailView';
 import BoardroomSimulator from '@/components/BoardroomSimulator';
+import MoleculeIntelligence from '@/components/MoleculeIntelligence';
 
 export default function DashboardPage() {
   const { reactors, selectedReactor, selectReactor, cloudSync } = useReactors();
@@ -75,6 +76,8 @@ export default function DashboardPage() {
       <div className="mb-8">
         <DashboardStats />
       </div>
+
+      <MoleculeIntelligence reactors={reactors} />
 
       <BoardroomSimulator reactors={reactors} />
 
