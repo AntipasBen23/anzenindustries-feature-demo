@@ -41,10 +41,10 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
       {/* Card Header */}
       <div className="card-header flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-black mb-1">
+          <h3 className="text-lg font-bold text-white mb-1">
             {reactor.name}
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-zinc-400">
             {reactor.location}
           </p>
         </div>
@@ -52,7 +52,7 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
         {/* Status Indicator */}
         <div className="flex items-center gap-2 mt-1">
           <div className={`status-dot ${config.dotClass}`}></div>
-          <span className="text-xs font-medium text-black uppercase tracking-wide">
+          <span className="text-xs font-medium text-zinc-300 uppercase tracking-wide">
             {config.label}
           </span>
         </div>
@@ -63,32 +63,32 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
         <div className="grid grid-cols-2 gap-4">
           {/* Temperature */}
           <div>
-            <div className="text-xs text-gray-500 mb-1">Temperature</div>
-            <div className="text-xl font-bold text-black metric-value">
+            <div className="text-xs text-zinc-500 mb-1">Temperature</div>
+            <div className="text-xl font-bold text-white metric-value">
               {reactor.currentMetrics.temperature.toFixed(1)}°C
             </div>
           </div>
 
           {/* pH */}
           <div>
-            <div className="text-xs text-gray-500 mb-1">pH Level</div>
-            <div className="text-xl font-bold text-black metric-value">
+            <div className="text-xs text-zinc-500 mb-1">pH Level</div>
+            <div className="text-xl font-bold text-white metric-value">
               {reactor.currentMetrics.pH.toFixed(2)}
             </div>
           </div>
 
           {/* Enzyme Activity */}
           <div>
-            <div className="text-xs text-gray-500 mb-1">Enzyme Activity</div>
-            <div className="text-xl font-bold text-black metric-value">
+            <div className="text-xs text-zinc-500 mb-1">Enzyme Activity</div>
+            <div className="text-xl font-bold text-white metric-value">
               {reactor.currentMetrics.enzymeActivity.toFixed(1)}%
             </div>
           </div>
 
           {/* Product Yield */}
           <div>
-            <div className="text-xs text-gray-500 mb-1">Product Yield</div>
-            <div className="text-xl font-bold text-black metric-value">
+            <div className="text-xs text-zinc-500 mb-1">Product Yield</div>
+            <div className="text-xl font-bold text-white metric-value">
               {reactor.currentMetrics.productYield.toFixed(1)}%
             </div>
           </div>
@@ -101,14 +101,14 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
         <div className="flex items-center justify-between text-xs">
           <div className="flex items-center gap-4">
             <div>
-              <span className="text-gray-500">Uptime: </span>
-              <span className="font-medium text-black">
+              <span className="text-zinc-500">Uptime: </span>
+              <span className="font-medium text-zinc-100">
                 {reactor.uptime.toFixed(1)}h
               </span>
             </div>
             <div>
-              <span className="text-gray-500">Batches: </span>
-              <span className="font-medium text-black">
+              <span className="text-zinc-500">Batches: </span>
+              <span className="font-medium text-zinc-100">
                 {reactor.totalBatches}
               </span>
             </div>
@@ -123,7 +123,7 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                className="text-black"
+                className="text-zinc-300"
               >
                 <path
                   strokeLinecap="round"
@@ -132,7 +132,7 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
                   d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
                 />
               </svg>
-              <span className="font-medium text-black">
+              <span className="font-medium text-zinc-100">
                 {reactor.alerts.filter(a => !a.resolved).length}
               </span>
             </div>
@@ -141,7 +141,7 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
 
         {/* AI Prediction Preview */}
         {reactor.predictions.enzymeDeactivation.hoursRemaining < 12 && (
-          <div className="mt-4 p-3 bg-gray-50 rounded border border-gray-200">
+          <div className="mt-4 p-3 bg-zinc-800/60 rounded border border-zinc-700">
             <div className="flex items-start gap-2">
               <svg
                 width="16"
@@ -149,18 +149,18 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                className="text-black mt-0.5 flex-shrink-0"
+                className="text-zinc-400 mt-0.5 flex-shrink-0"
               >
                 <circle cx="12" cy="12" r="10" strokeWidth={2} />
                 <path strokeLinecap="round" strokeWidth={2} d="M12 6v6l4 2" />
               </svg>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium text-black mb-0.5">
+                <div className="text-xs font-medium text-zinc-100 mb-0.5">
                   Enzyme Deactivation Alert
                 </div>
-                <div className="text-xs text-gray-600">
+                <div className="text-xs text-zinc-400">
                   Activity may drop below 70% in{' '}
-                  <span className="font-medium text-black">
+                  <span className="font-medium text-zinc-100">
                     {reactor.predictions.enzymeDeactivation.hoursRemaining.toFixed(1)}h
                   </span>
                 </div>
@@ -172,7 +172,7 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
         {/* Optimization Available */}
         {reactor.predictions.yieldOptimization.predictedYield > 
          reactor.currentMetrics.productYield + 5 && (
-          <div className="mt-3 p-2 bg-black text-white rounded text-center">
+          <div className="mt-3 p-2 bg-zinc-100 text-zinc-900 rounded text-center">
             <div className="text-xs font-medium">
               Optimization Available: +
               {(reactor.predictions.yieldOptimization.predictedYield - 
@@ -190,7 +190,7 @@ export default function ReactorCard({ reactor }: ReactorCardProps) {
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          className="text-gray-400"
+          className="text-zinc-600"
         >
           <path
             strokeLinecap="round"

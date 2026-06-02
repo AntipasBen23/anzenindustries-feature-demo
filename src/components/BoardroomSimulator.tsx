@@ -87,7 +87,7 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
 
   const exportProposal = () => {
     const lines = [
-      'ANZEN INDUSTRIES - PILOT PROPOSAL',
+      'TERA — PILOT PROPOSAL',
       '',
       'Program: Reactor Intelligence Boardroom Mode',
       'Window: 90 days',
@@ -126,9 +126,9 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
     <section className="boardroom-shell mb-8">
       <div className="boardroom-head">
         <div>
-          <p className="text-xs uppercase tracking-wider text-gray-600 mb-1">Boardroom Mode</p>
-          <h2 className="text-2xl font-bold text-black">90-Day ROI Simulator</h2>
-          <p className="text-sm text-gray-700 mt-2 max-w-3xl">
+          <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">Boardroom Mode</p>
+          <h2 className="text-2xl font-bold text-white">90-Day ROI Simulator</h2>
+          <p className="text-sm text-zinc-300 mt-2 max-w-3xl">
             Translate reactor optimization into hiring, throughput, and commercial outcomes leadership can act on.
           </p>
         </div>
@@ -175,20 +175,20 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mt-4">
         <div className="xl:col-span-2 card p-5">
-          <h3 className="text-sm font-semibold text-black mb-3">Why The Model Moves</h3>
+          <h3 className="text-sm font-semibold text-white mb-3">Why The Model Moves</h3>
           <div className="space-y-3">
             {scenario.drivers.map((driver) => (
-              <div key={driver.label} className="p-3 rounded border border-gray-200 bg-gray-50">
-                <div className="text-sm font-semibold text-black">{driver.label}</div>
-                <div className="text-xs text-gray-700 mt-1">{driver.detail}</div>
+              <div key={driver.label} className="p-3 rounded border border-zinc-700/60 bg-zinc-800/40">
+                <div className="text-sm font-semibold text-white">{driver.label}</div>
+                <div className="text-xs text-zinc-300 mt-1">{driver.detail}</div>
               </div>
             ))}
           </div>
         </div>
 
         <div className="card p-5">
-          <h3 className="text-sm font-semibold text-black mb-3">Executive Action Pack</h3>
-          <p className="text-xs text-gray-700 mb-4">
+          <h3 className="text-sm font-semibold text-white mb-3">Executive Action Pack</h3>
+          <p className="text-xs text-zinc-300 mb-4">
             Export a concise pilot recommendation with hard numbers for stakeholder review.
           </p>
           <button className="btn-primary w-full" onClick={exportProposal}>

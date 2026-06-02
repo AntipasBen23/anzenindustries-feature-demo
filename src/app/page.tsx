@@ -119,15 +119,15 @@ export default function DashboardPage() {
       >
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wider text-gray-600 mb-2">Anzen Reactor Intelligence</p>
+            <p className="text-xs uppercase tracking-wider text-zinc-500 mb-2">Tera Reactor Intelligence</p>
             <h1 className="section-title mb-2">Optimization Command Center</h1>
-            <p className="text-sm text-gray-700 max-w-2xl">
+            <p className="text-sm text-zinc-300 max-w-2xl">
               Real-time decision support for cell-free biomanufacturing. Designed to cut manual tuning cycles
               and convert every reactor run into measurable output gains.
             </p>
           </div>
           <div className="stream-pill">
-            <span className="w-2 h-2 rounded-full bg-black pulse-indicator"></span>
+            <span className="w-2 h-2 rounded-full bg-zinc-100 pulse-indicator"></span>
             <span>{streamLabel}</span>
           </div>
         </div>
@@ -167,15 +167,15 @@ export default function DashboardPage() {
       <div className="page-header">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-semibold text-black mb-1">Reactor Dashboard</h2>
-            <p className="text-sm text-gray-600">
+            <h2 className="text-xl font-semibold text-white mb-1">Reactor Dashboard</h2>
+            <p className="text-sm text-zinc-400">
               Real-time monitoring and AI-powered optimization
             </p>
           </div>
 
           <div className="flex items-center gap-2 text-sm">
-            <div className="w-2 h-2 bg-black rounded-full pulse-indicator"></div>
-            <span className="text-gray-600">Live Updates</span>
+            <div className="w-2 h-2 bg-zinc-100 rounded-full pulse-indicator"></div>
+            <span className="text-zinc-400">Live Updates</span>
           </div>
         </div>
       </div>
@@ -193,8 +193,8 @@ export default function DashboardPage() {
         className={`mb-8 ${isScriptRunning && activeStep.id === 'reactor-grid' ? 'demo-focus' : ''}`}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-black">Reactor Systems</h2>
-          <span className="text-sm text-gray-600">
+          <h2 className="text-xl font-semibold text-white">Reactor Systems</h2>
+          <span className="text-sm text-zinc-400">
             {reactors.length} {reactors.length === 1 ? 'reactor' : 'reactors'} configured
           </span>
         </div>
@@ -210,7 +210,7 @@ export default function DashboardPage() {
         id="quick-actions"
         className={`card p-6 ${isScriptRunning && activeStep.id === 'quick-actions' ? 'demo-focus' : ''}`}
       >
-        <h3 className="card-title">Quick Actions</h3>
+        <h3 className="card-title text-white">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           <button
             className="btn-secondary text-left p-4 h-auto"
@@ -240,8 +240,8 @@ export default function DashboardPage() {
                 />
               </svg>
               <div>
-                <div className="font-semibold text-black mb-1">View Alerts</div>
-                <div className="text-sm text-gray-600">
+                <div className="font-semibold text-white mb-1">View Alerts</div>
+                <div className="text-sm text-zinc-400">
                   {reactors.reduce(
                     (sum, reactor) => sum + reactor.alerts.filter((alert) => !alert.resolved).length,
                     0
@@ -278,8 +278,8 @@ export default function DashboardPage() {
                 />
               </svg>
               <div>
-                <div className="font-semibold text-black mb-1">AI Optimization</div>
-                <div className="text-sm text-gray-600">Optimize reactor parameters</div>
+                <div className="font-semibold text-white mb-1">AI Optimization</div>
+                <div className="text-sm text-zinc-400">Optimize reactor parameters</div>
               </div>
             </div>
           </button>
@@ -307,8 +307,8 @@ export default function DashboardPage() {
                 />
               </svg>
               <div>
-                <div className="font-semibold text-black mb-1">Generate Report</div>
-                <div className="text-sm text-gray-600">Export system analytics</div>
+                <div className="font-semibold text-white mb-1">Generate Report</div>
+                <div className="text-sm text-zinc-400">Export system analytics</div>
               </div>
             </div>
           </button>
@@ -317,7 +317,7 @@ export default function DashboardPage() {
 
       <div
         id="status-panel"
-        className={`mt-8 p-4 bg-gray-50 rounded border border-gray-200 ${isScriptRunning && activeStep.id === 'status-panel' ? 'demo-focus' : ''}`}
+        className={`mt-8 p-4 bg-zinc-900 rounded border border-zinc-800 ${isScriptRunning && activeStep.id === 'status-panel' ? 'demo-focus' : ''}`}
       >
         <div className="flex items-start gap-3">
           <svg
@@ -326,21 +326,21 @@ export default function DashboardPage() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            className="text-black mt-0.5 flex-shrink-0"
+            className="text-zinc-400 mt-0.5 flex-shrink-0"
           >
             <circle cx="12" cy="12" r="10" strokeWidth={2} />
             <path strokeLinecap="round" strokeWidth={2} d="M12 16v-4M12 8h.01" />
           </svg>
           <div className="flex-1">
-            <div className="text-sm font-medium text-black mb-1">Platform Status: Operational</div>
-            <div className="text-xs text-gray-600">
+            <div className="text-sm font-medium text-zinc-100 mb-1">Platform Status: Operational</div>
+            <div className="text-xs text-zinc-500">
               All systems connected | Data updates every 2 seconds | {syncText}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 p-4 border-2 border-black rounded">
+      <div className="mt-6 p-4 border border-zinc-700 rounded bg-zinc-900/50">
         <div className="flex items-start gap-3">
           <svg
             width="20"
@@ -348,7 +348,7 @@ export default function DashboardPage() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            className="text-black mt-0.5 flex-shrink-0"
+            className="text-zinc-400 mt-0.5 flex-shrink-0"
           >
             <path
               strokeLinecap="round"
@@ -358,8 +358,8 @@ export default function DashboardPage() {
             />
           </svg>
           <div className="flex-1">
-            <div className="text-sm font-bold text-black mb-1">Investor-Ready Demo Mode</div>
-            <div className="text-xs text-gray-700">
+            <div className="text-sm font-bold text-zinc-100 mb-1">Investor-Ready Demo Mode</div>
+            <div className="text-xs text-zinc-400">
               This interface demonstrates real-time reactor monitoring with physics-based simulations.
               It is intentionally frontend-first to validate operational workflows, optimization decisions,
               and measurable business impact before full sensor integration.

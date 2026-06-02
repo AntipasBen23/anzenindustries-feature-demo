@@ -63,7 +63,7 @@ export default function DashboardStats() {
       {stats.map((stat, index) => (
         <div
           key={stat.label}
-          className={`metric-card chart-enter ${stat.highlight ? 'border-black border-2' : ''}`}
+          className={`metric-card chart-enter ${stat.highlight ? 'border-zinc-300 border-2' : ''}`}
           style={{
             animationDelay: `${index * 50}ms`,
           }}
@@ -87,7 +87,7 @@ export default function DashboardStats() {
             </div>
 
             {/* Description */}
-            <div className={`text-xs mt-2 ${stat.highlight ? 'text-black font-medium' : 'text-gray-500'}`}>
+            <div className={`text-xs mt-2 ${stat.highlight ? 'text-white font-medium' : 'text-zinc-500'}`}>
               {stat.description}
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function DashboardStats() {
           {/* Visual indicator for active status */}
           {stat.label === 'Active Reactors' && Number(stat.value) > 0 && (
             <div className="absolute top-3 right-3">
-              <div className="w-2 h-2 bg-black rounded-full pulse-indicator"></div>
+              <div className="w-2 h-2 bg-zinc-100 rounded-full pulse-indicator"></div>
             </div>
           )}
         </div>
