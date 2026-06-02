@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactorProvider } from '@/contexts/ReactorContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
@@ -22,17 +23,23 @@ export const viewport: Viewport = {
   maximumScale: 1,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {/* Anti-FOUC: apply saved theme before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('tera-theme');if(t==='light')document.documentElement.classList.add('light');}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="antialiased min-h-screen">
-        <ReactorProvider>
-          {children}
-        </ReactorProvider>
+        <ThemeProvider>
+          <ReactorProvider>
+            {children}
+          </ReactorProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

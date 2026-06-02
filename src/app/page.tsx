@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useReactors } from '@/contexts/ReactorContext';
+import ThemeToggle from '@/components/ThemeToggle';
 import DashboardStats from '@/components/DashboardStats';
 import ReactorCard from '@/components/ReactorCard';
 import ReactorDetailView from '@/components/ReactorDetailView';
@@ -44,9 +45,12 @@ export default function DashboardPage() {
               and convert every reactor run into measurable output gains.
             </p>
           </div>
-          <div className="stream-pill">
-            <span className="w-2 h-2 rounded-full bg-zinc-100 pulse-indicator"></span>
-            <span>{streamLabel}</span>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <div className="stream-pill">
+              <span className="status-dot status-running" style={{ width: '0.5rem', height: '0.5rem' }}></span>
+              <span>{streamLabel}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -96,7 +100,7 @@ export default function DashboardPage() {
                 </p>
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <div className="w-2 h-2 bg-zinc-100 rounded-full pulse-indicator"></div>
+                <div className="status-dot status-running"></div>
                 <span className="text-zinc-400">Live Updates</span>
               </div>
             </div>
