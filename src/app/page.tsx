@@ -59,7 +59,7 @@ export default function DashboardPage() {
       <div className="flex gap-0 border-b border-zinc-800 mb-8">
         {([
           { id: 'live', label: 'Live Ops' },
-          { id: 'v1',   label: 'v1 Readiness' },
+          { id: 'v1',   label: 'Process Intelligence' },
         ] as { id: Tab; label: string }[]).map((tab) => (
           <button
             key={tab.id}

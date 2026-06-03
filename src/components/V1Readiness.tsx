@@ -23,52 +23,6 @@ function checkReadiness(reactor: Reactor) {
   ];
 }
 
-const PHASES = [
-  {
-    tag: 'Phase 1',
-    name: 'Baseline Calibration',
-    days: 'Days 1–14',
-    milestones: [
-      'Establish enzyme activity baseline per reactor',
-      'Validate pH control within ±0.15 of 7.35',
-      'Run 3 consecutive calibration batches per station',
-      'Document first deactivation curves',
-    ],
-  },
-  {
-    tag: 'Phase 2',
-    name: 'First Production Runs',
-    days: 'Days 15–30',
-    milestones: [
-      'Target ≥6 runs without manual intervention',
-      'Set OPC alert thresholds from Phase 1 data',
-      'Begin substrate replenishment protocol testing',
-      'Record anomaly frequency and type per station',
-    ],
-  },
-  {
-    tag: 'Phase 3',
-    name: 'AI Optimization Cycles',
-    days: 'Days 31–60',
-    milestones: [
-      'Run AI-guided parameter adjustments on one reactor',
-      'Target sustained purity ≥82% over 5 runs',
-      'Compare optimized vs baseline deactivation rate',
-      'Build per-reactor performance fingerprint',
-    ],
-  },
-  {
-    tag: 'Phase 4',
-    name: 'v1 Certification',
-    days: 'Days 61–90',
-    milestones: [
-      'Sustain all v1 targets across ≥10 consecutive runs',
-      'Complete anomaly response playbook',
-      'Document cost-per-gram improvement trajectory',
-      'v1 commercial readiness sign-off',
-    ],
-  },
-];
 
 export default function V1Readiness({ reactors }: Props) {
   // Per-reactor readiness
@@ -226,11 +180,10 @@ export default function V1Readiness({ reactors }: Props) {
 
       {/* Header */}
       <div>
-        <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">v1 Launch Intelligence</p>
-        <h2 className="text-xl font-semibold text-white">Tera v1 Readiness</h2>
+        <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">Process Intelligence</p>
+        <h2 className="text-xl font-semibold text-white">Operations Baseline</h2>
         <p className="text-xs text-zinc-500 mt-1 max-w-2xl">
-          What to measure, establish, and watch in the first 90 days of California operations.
-          Built around where Tera actually is — not where a generic biomanufacturing company is.
+          Live view of where each station stands against key process thresholds — updated every 2s from reactor telemetry.
         </p>
       </div>
 
@@ -275,7 +228,7 @@ export default function V1Readiness({ reactors }: Props) {
 
                 <div className="mt-4 pt-3 border-t border-zinc-800">
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-zinc-500">v1 criteria met</span>
+                    <span className="text-zinc-500">criteria met</span>
                     <span className="font-mono text-zinc-100">{passed} / {checks.length}</span>
                   </div>
                   <div className="h-px bg-zinc-800 rounded-full overflow-hidden">
@@ -293,7 +246,7 @@ export default function V1Readiness({ reactors }: Props) {
 
       {/* Baseline targets table */}
       <div>
-        <p className="text-xs uppercase tracking-wider text-zinc-500 mb-3">v1 Baseline Targets</p>
+        <p className="text-xs uppercase tracking-wider text-zinc-500 mb-3">Baseline Targets</p>
         <div className="card overflow-hidden">
           {/* Header row */}
           <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-5 py-2.5 border-b border-zinc-800">
@@ -326,7 +279,7 @@ export default function V1Readiness({ reactors }: Props) {
       <div>
         <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">Early Anomaly Intelligence</p>
         <p className="text-xs text-zinc-600 mb-4">
-          What to expect and watch in v1 California operations — live status from current reactor telemetry
+          Live status from current reactor telemetry
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {anomalies.map((a) => (
@@ -339,28 +292,6 @@ export default function V1Readiness({ reactors }: Props) {
               </div>
               <p className="text-xs text-zinc-400 leading-relaxed">{a.detail}</p>
               <div className="mt-2.5 text-xs font-mono text-zinc-600">{a.context}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 90-day timeline */}
-      <div>
-        <p className="text-xs uppercase tracking-wider text-zinc-500 mb-3">90-Day Launch Plan</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
-          {PHASES.map((phase) => (
-            <div key={phase.tag} className="card p-4">
-              <div className="text-xs font-mono text-zinc-600 mb-1">{phase.days}</div>
-              <div className="text-xs font-bold uppercase tracking-wider text-zinc-500 mb-0.5">{phase.tag}</div>
-              <div className="text-sm font-semibold text-white mb-3">{phase.name}</div>
-              <ul className="space-y-2">
-                {phase.milestones.map((m, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-zinc-400">
-                    <span className="text-zinc-700 mt-0.5 flex-shrink-0">—</span>
-                    <span className="leading-relaxed">{m}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
