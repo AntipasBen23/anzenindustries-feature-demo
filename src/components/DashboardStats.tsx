@@ -80,7 +80,7 @@ export default function DashboardStats() {
                 {stat.value}
               </span>
               {stat.unit && (
-                <span className="text-base font-medium text-gray-600">
+                <span className="text-base font-medium text-zinc-500">
                   {stat.unit}
                 </span>
               )}
