@@ -58,7 +58,7 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
     const currentRevenue = estimateRevenue(current.yield, current.batches);
     const optimizedRevenue = estimateRevenue(optimized.yield, optimized.batches);
 
-    // --- Molecular Economics ---
+    // Molecular Economics
     // Fleet-average purity: enzyme selectivity × pH optimality × dissolved O₂
     const avgRawPurity =
       reactors.reduce((sum, r) => {
@@ -75,7 +75,7 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
     // Purity improves with yield optimisation (tighter pH/temp control)
     const optimizedPurity = Math.round(Math.min(95, currentPurity + deltaYield * 0.5) * 10) / 10;
 
-    // Cost per gram — 10 L reactor, 10 g/L max product concentration, $11,500/run
+    // Cost per gram: 10 L reactor, 10 g/L max product concentration, $11,500/run
     const costPerRun = 11500;
     const currentGpR = 10 * 10 * (current.yield / 100) * (currentPurity / 100);
     const optimizedGpR = 10 * 10 * (optimized.yield / 100) * (optimizedPurity / 100);
@@ -140,7 +140,7 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
           <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">Founder Mode</p>
           <h2 className="text-2xl font-bold text-white">90-Day Optimization Model</h2>
           <p className="text-sm text-zinc-300 mt-2 max-w-3xl">
-            From molecule purity to margin — optimization modeled across both dimensions.
+            From molecule purity to margin: optimization modeled across both dimensions.
           </p>
         </div>
         <div className="mode-switch">
@@ -185,7 +185,7 @@ export default function BoardroomSimulator({ reactors }: BoardroomSimulatorProps
         </div>
       </div>
 
-      {/* Molecular Economics — science + commercial bridge */}
+      {/* Molecular Economics */}
       <div className="mt-4 card p-5">
         <p className="text-xs uppercase tracking-wider text-zinc-500 mb-5">Molecular Economics</p>
 

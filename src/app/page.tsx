@@ -35,7 +35,7 @@ export default function DashboardPage() {
   return (
     <div className="container-responsive py-8">
 
-      {/* Hero — always visible */}
+      {/* Hero */}
       <div className="executive-hero mb-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
 
               <button
                 className="btn-secondary text-left p-4 h-auto"
-                onClick={() => alert('Report generation — coming soon')}
+                onClick={() => alert('Report generation: coming soon')}
               >
                 <div className="flex items-start gap-3">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="flex-shrink-0">

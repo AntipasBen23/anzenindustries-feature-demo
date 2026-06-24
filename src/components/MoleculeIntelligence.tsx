@@ -106,7 +106,7 @@ export default function MoleculeIntelligence({ reactors }: Props) {
         <div className="divide-y divide-zinc-800">
           {reactors.map((reactor, i) => {
             const m = allMetrics[i];
-            const station = reactor.location.split('—')[1]?.trim() ?? reactor.location;
+            const station = reactor.location.split('·')[1]?.trim() ?? reactor.location;
             return (
               <div key={reactor.id} className="py-4 first:pt-0 last:pb-0">
                 <div className="flex items-baseline gap-2 mb-3">

@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Tera — Reactor Intelligence',
+  title: 'Tera | Reactor Intelligence',
   description: 'Real-time enzyme reactor monitoring and AI-powered optimization for cell-free biomanufacturing',
   keywords: ['enzyme reactor', 'biomanufacturing', 'process monitoring', 'AI optimization'],
   authors: [{ name: 'Tera' }],

@@ -419,9 +419,9 @@ export function generateDashboardStats(reactors: Reactor[]): DashboardStats {
 
 // Initialize mock reactors
 export const mockReactors: Reactor[] = [
-  createMockReactor('RXN-001', 'Reactor Alpha', 'Tera Research Campus — Station 01', 12345),
-  createMockReactor('RXN-002', 'Reactor Beta', 'Tera Research Campus — Station 02', 67890),
-  createMockReactor('RXN-003', 'Reactor Gamma', 'Tera Research Campus — Station 03', 11121),
+  createMockReactor('RXN-001', 'Reactor Alpha', 'Tera Research Campus · Station 01', 12345),
+  createMockReactor('RXN-002', 'Reactor Beta', 'Tera Research Campus · Station 02', 67890),
+  createMockReactor('RXN-003', 'Reactor Gamma', 'Tera Research Campus · Station 03', 11121),
 ];
 
 // Update function to be called every second

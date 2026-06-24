@@ -54,7 +54,7 @@ export default function V1Readiness({ reactors }: Props) {
     },
     {
       name: 'Enzyme Activity',
-      description: 'Stability baseline — sets your deactivation clock accuracy',
+      description: 'Stability baseline: sets your deactivation clock accuracy',
       target: '≥ 80%',
       current: fleetEnzyme.toFixed(1) + '%',
       ready: fleetEnzyme >= 80,
@@ -62,7 +62,7 @@ export default function V1Readiness({ reactors }: Props) {
     },
     {
       name: 'pH Deviation',
-      description: 'Buffer control tolerance from 7.35 optimum — drives purity and side reactions',
+      description: 'Buffer control tolerance from 7.35 optimum; drives purity and side reactions',
       target: '< 0.15',
       current: fleetPhDev.toFixed(3),
       ready: fleetPhDev < 0.15,
@@ -70,7 +70,7 @@ export default function V1Readiness({ reactors }: Props) {
     },
     {
       name: 'Molecule Purity',
-      description: 'Target molecule purity per run — the quality bar Amy ships against',
+      description: 'Target molecule purity per run, the quality bar that ships with v1',
       target: '≥ 82%',
       current: fleetPurity.toFixed(1) + '%',
       ready: fleetPurity >= 82,
@@ -78,7 +78,7 @@ export default function V1Readiness({ reactors }: Props) {
     },
     {
       name: 'Temperature Stability',
-      description: 'Drift from 35.8°C — chiller tolerance matters more early than it did in the lab',
+      description: 'Drift from 35.8°C; chiller tolerance matters more in production than it did in the lab',
       target: '< 0.5°C',
       current: fleetTempDev.toFixed(2) + '°C',
       ready: fleetTempDev < 0.5,
@@ -86,7 +86,7 @@ export default function V1Readiness({ reactors }: Props) {
     },
     {
       name: 'Dissolved Oxygen',
-      description: 'Sparging adequacy — critical for enzyme turnover rate',
+      description: 'Sparging adequacy; critical for enzyme turnover rate',
       target: '≥ 85%',
       current: fleetO2.toFixed(1) + '%',
       ready: fleetO2 >= 85,
@@ -111,7 +111,7 @@ export default function V1Readiness({ reactors }: Props) {
     {
       name: 'pH Startup Drift',
       detail:
-        'Expect 0.1–0.3 drift in the first 12h of each run as buffers equilibrate. Establish automated correction triggers early — do not rely on manual checks.',
+        'Expect 0.1–0.3 drift in the first 12h of each run as buffers equilibrate. Establish automated correction triggers early; do not rely on manual checks.',
       status:
         reactors.some((r) => Math.abs(r.currentMetrics.pH - 7.35) > 0.25)
           ? 'detected'
@@ -135,7 +135,7 @@ export default function V1Readiness({ reactors }: Props) {
     {
       name: 'Mid-Run Substrate Depletion',
       detail:
-        'A substrate drop mid-run can signal higher-than-modelled enzyme activity — sometimes good news, but plan replenishment protocols before it becomes a yield floor.',
+        'A substrate drop mid-run can signal higher-than-modelled enzyme activity. Good news potentially, but plan replenishment protocols before it becomes a yield floor.',
       status:
         reactors.some((r) => r.currentMetrics.substrateConcentration < 7)
           ? 'detected'
@@ -147,7 +147,7 @@ export default function V1Readiness({ reactors }: Props) {
     {
       name: 'Temperature Excursion',
       detail:
-        'Chiller lag in the first month of California ops is common. Use ±0.5°C as your v1 alert threshold — tighter lab specs will generate noise before hardware is broken in.',
+        'Chiller lag in the first month of California ops is common. Use ±0.5°C as your v1 alert threshold; tighter lab specs will generate noise before hardware is broken in.',
       status:
         reactors.some((r) => Math.abs(r.currentMetrics.temperature - 35.8) > 0.8)
           ? 'detected'
@@ -183,7 +183,7 @@ export default function V1Readiness({ reactors }: Props) {
         <p className="text-xs uppercase tracking-wider text-zinc-500 mb-1">Process Intelligence</p>
         <h2 className="text-xl font-semibold text-white">Operations Baseline</h2>
         <p className="text-xs text-zinc-500 mt-1 max-w-2xl">
-          Live view of where each station stands against key process thresholds — updated every 2s from reactor telemetry.
+          Live view of where each station stands against key process thresholds, updated every 2s from reactor telemetry.
         </p>
       </div>
 
@@ -220,7 +220,7 @@ export default function V1Readiness({ reactors }: Props) {
                     <div key={check.label} className="flex items-center justify-between">
                       <span className="text-xs text-zinc-500">{check.label}</span>
                       <span className={`text-xs font-mono font-medium ${check.pass ? 'text-zinc-100' : 'text-zinc-600'}`}>
-                        {check.pass ? '✓' : '—'}
+                        {check.pass ? '✓' : '·'}
                       </span>
                     </div>
                   ))}
