@@ -1,4 +1,4 @@
-// Core reactor data types for the Anzen Industries monitoring platform
+// Core reactor data types for the Tera reactor intelligence platform
 
 export interface ReactorMetrics {
   temperature: number; // Celsius
